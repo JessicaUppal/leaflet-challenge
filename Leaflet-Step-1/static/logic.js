@@ -25,14 +25,16 @@ function markerSize(magnitude) {
 
 // function to return the colour based on magnitude
 function markerColor(magnitude) {
-  if (magnitude > 4) {
-    return 'red'
+  if (magnitude > 5) {
+    return 'crimson'
+  } else if (magnitude > 4) {
+    return 'lightsalmon'
   } else if (magnitude > 3) {
-    return 'orange'
-  } else if (magnitude > 2) {
     return 'yellow'
+  } else if (magnitude > 2) {
+    return 'yellowgreen'
   } else {
-    return 'green'
+    return 'palegreen'
   }
 }
 
@@ -62,6 +64,8 @@ d3.json(queryUrl).then(function(data) {
     onEachFeature : addPopup,
     pointToLayer: addMarker });
     earthquakes.addTo(myMap);
+    
+    // Create markers 
     function addMarker(feature, location) {
         var options = {
           stroke: false,
@@ -70,50 +74,45 @@ d3.json(queryUrl).then(function(data) {
           fillColor: markerColor(feature.properties.mag),
           radius: markerSize(feature.properties.mag)
         };
-      
         return L.circleMarker(location, options);
     
       
       }
-      // Create popup function with earthquake information
+
+// Create popup function with earthquake information
 function addPopup(feature, layer) {
     return layer.bindPopup(`<h3> ${feature.properties.place} </h3> <hr> <h4>Magnitude: ${feature.properties.mag} </h4> <p> ${Date(feature.properties.time)} </p>`);
 }
 
-    // Create and add legend on map
-    // Set up the legend.
-  var legend = L.control({ position: "bottomright" });
-  legend.onAdd = function() {
-    var div = L.DomUtil.create("div", "info legend");
-    var limits = earthquakes.options.limits;
-    var colors = earthquakes.options.colors;
-    var labels = [];
+// Define colours for legend key
+function getColor(d) {
+    return d > 5    ? 'crimson' :
+           d > 4    ? 'lightsalmon' :
+           d > 3    ? 'yellow' :
+           d > 2    ? 'yellowgreen' :
+           d < 2    ? 'palegreen' :
+                      'palegreen';
+}
 
-    // Add the minimum and maximum.
-    var legendInfo = "<h1>Median Income</h1>" +
-      "<div class=\"labels\">" +
-        "<div class=\"min\">" + limits[0] + "</div>" +
-        "<div class=\"max\">" + limits[limits.length - 1] + "</div>" +
-      "</div>";
+// Create legend 
+var legend = L.control({position: 'bottomleft'});
+legend.onAdd = function (map) {
 
-    div.innerHTML = legendInfo;
-
-    limits.forEach(function(limit, index) {
-      labels.push("<li style=\"background-color: " + colors[index] + "\"></li>");
-    });
-
-    div.innerHTML += "<ul>" + labels.join("") + "</ul>";
+    var div = L.DomUtil.create('div', 'info legend'),
+        mag = [0, 2, 3, 4, 5];
+        
+// Generate a label with a colored square for each interval
+    for (var i = 0; i < mag.length; i++) {
+        div.innerHTML += 
+            '<i style="background:' + getColor(mag[i] + 1) + '"></i> ' +
+            mag[i] + (mag[i + 1] ? '&ndash;' + mag[i + 1] + '<br>' : '+');
+    }
     return div;
-  };
+};
 
-  // Adding the legend to the map
-  legend.addTo(myMap);
+// Add legend onto map 
+legend.addTo(myMap);
 
- 
-
-  
-
+// Add markers onto map
 options.addTo(myMap);
-
-
-  });
+});
