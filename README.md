@@ -1,4 +1,4 @@
-# Leaflet Homework: Visualizing Data with Leaflet
+﻿# Leaflet Homework: Visualizing Data with Leaflet
 
 ## Background
 
@@ -48,7 +48,8 @@ Your first task is to visualize an earthquake data set.
 
    * Create a legend that will provide context for your map data.
 
-   * Your visualization should look something like the map above.
+
+![2-BasicMap](Images/2-MapLabel.png)
 
 - - -
 
@@ -80,3 +81,4 @@ Your final product will be assessed according to [this grading rubric](Leaflet_G
 
 ___
 © 2021  Trilogy Education Services, a 2U, Inc. brand. All Rights Reserved.	
+
