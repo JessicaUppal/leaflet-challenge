@@ -44,7 +44,7 @@ Your first task is to visualize an earthquake data set.
 
    * Include popups that provide additional information about the earthquake when a marker is clicked.
 
-   * Create a legend that will provide context for your map data.
+   * Create a legend that will provide context for earthquake magnitude.
 
 
 ![2-BasicMap](Images/2-MapLabel.png)
